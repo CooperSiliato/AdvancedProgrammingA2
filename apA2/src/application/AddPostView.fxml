@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="application.AddPostController" 
+      alignment="CENTER" spacing="10" styleClass="background">
+    <Label text="Add Post" styleClass="header-text"/>
+    <TextField fx:id="IDField" promptText="id" />
+    <TextField fx:id="contentField" promptText="Post Content" />
+    <TextField fx:id="authorField" promptText="Post Author" />
+    <TextField fx:id="likesField" promptText="Likes" />
+    <TextField fx:id="sharesField" promptText="Shares" />
+    <TextField fx:id="dateTimeField" promptText="Date and Time (DD/MM/YYYY HH:MM)" />
+    <Button text="Add Post" onAction="#addPost"/>
+    <Button text="Back to Dashboard" onAction="#backToDashboard"/>
+</VBox>
