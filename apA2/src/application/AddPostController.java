@@ -23,6 +23,8 @@ public class AddPostController {
     private TextField dateTimeField;
     @FXML
     private TextField IDField;
+    @FXML
+    private TextField ownerField;
 
     public void addPost() {
         // Get the values from the input fields
@@ -32,9 +34,10 @@ public class AddPostController {
         String likes = likesField.getText();
         String shares = sharesField.getText();
         String dateTime = dateTimeField.getText();
+        String owner = ownerField.getText();
 
         // Create a CSV line
-        String newPost = id + "," + content + "," + author + "," + likes + "," + shares + "," + dateTime;
+        String newPost = id + "," + content + "," + author + "," + likes + "," + shares + "," + dateTime + "," + owner;
 
         // Append the new post to the CSV file
         try (FileWriter writer = new FileWriter("csvfiles/posts.csv", true)) {
@@ -50,6 +53,7 @@ public class AddPostController {
         likesField.clear();
         sharesField.clear();
         dateTimeField.clear();
+        ownerField.clear();
     }
     
     @FXML

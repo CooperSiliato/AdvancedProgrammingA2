@@ -13,6 +13,7 @@
     <TextField fx:id="likesField" promptText="Likes" />
     <TextField fx:id="sharesField" promptText="Shares" />
     <TextField fx:id="dateTimeField" promptText="Date and Time (DD/MM/YYYY HH:MM)" />
+    <TextField fx:id="ownerField" promptText="Owner" />
     <Button text="Add Post" onAction="#addPost"/>
     <Button text="Back to Dashboard" onAction="#backToDashboard"/>
 </VBox>

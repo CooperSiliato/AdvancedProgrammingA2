@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import main.Analyser;
 
 import java.io.IOException;
 
@@ -18,27 +19,22 @@ public class DashboardController {
     private Label welcomeLabel;
     @FXML
     private Button editProfile;
+    
+    private Analyser analyser;
+    
+    public DashboardController() {
+    	analyser = new Analyser("Your Analyser Name");
+    }
 
     
-
     public void setWelcomeMessage(User user) {
         welcomeLabel.setText("Welcome, " + user.getFirstName() + " " + user.getLastName() + "!");
     }
 
     public void editProfile() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditProfileView.fxml"));
-            Parent root = loader.load();
-            EditProfileController editProfileController = loader.getController();
-            editProfileController.setUserData(user); // Pass the current user data
-            editProfileController.setDashboardController(this); // Pass the reference
-
-            Stage primaryStage = (Stage) welcomeLabel.getScene().getWindow();
-            primaryStage.setScene(new Scene(root));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    	
     }
+        
 
 
     public void addPost() {
@@ -58,23 +54,41 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
-
-    public void viewPosts() {
+    
+    
+    @FXML
+    private void viewPosts() {
         try {
-        	
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewPostsView.fxml"));
+        	FXMLLoader loader = new FXMLLoader(getClass().getResource("PostsMenuView.fxml"));
             Parent root = loader.load();
-            ViewPostsController viewPostController = loader.getController();
-            viewPostController.setDashboardController(this); // Pass the reference
-            viewPostController.initializePosts(); // Initialize and display the posts
+            PostsMenuController postsMenuController = loader.getController();
+            postsMenuController.setDashboardController(this); // Pass the reference
 
-            Scene viewPostsScene = new Scene(root);
+            Scene postsMenuScene = new Scene(root);
             Stage primaryStage = (Stage) welcomeLabel.getScene().getWindow();
-            primaryStage.setScene(viewPostsScene);
-        } catch (Exception e) {
+            primaryStage.setScene(postsMenuScene);
+       } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+//    @FXML
+//    public void viewLikedPosts() {
+//        try {
+//        	
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewPostsView.fxml"));
+//            Parent root = loader.load();
+//            ViewPostsController viewPostController = loader.getController();
+//            viewPostController.setDashboardController(this); // Pass the reference
+//            viewPostController.initializePosts(); // Initialize and display the posts
+//
+//            Scene viewPostsScene = new Scene(root);
+//            Stage primaryStage = (Stage) welcomeLabel.getScene().getWindow();
+//            primaryStage.setScene6(viewPostsScene);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     
     public void logout() {
@@ -89,5 +103,8 @@ public class DashboardController {
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
+    	
     }
+    
+    
 }

@@ -100,8 +100,9 @@ public class PostManager {
                     int likes = Integer.parseInt(parts[3]);
                     int shares = Integer.parseInt(parts[4]);
                     String dateTime = parts[5];
+                    String owner = parts[6];
 
-                    Post post = new Post(id, content, author, likes, shares, dateTime);
+                    Post post = new Post(id, content, author, likes, shares, dateTime, owner);
                     postsMap.put(id, post);
                 }
             }
@@ -111,11 +112,11 @@ public class PostManager {
     public void savePostsToCSV(String filePath) {
         try (FileWriter writer = new FileWriter(filePath)) {
             // Write the CSV header
-            writer.write("ID,content,author,likes,shares,date-time\n");
+            writer.write("ID,content,author,likes,shares,date-time,owner\n");
 
             for (Post post : postsMap.values()) {
                 writer.write(post.getId() + "," + post.getContent() + "," + post.getAuthor() + ","
-                        + post.getLikes() + "," + post.getShares() + "," + post.getDateTime() + "\n");
+                        + post.getLikes() + "," + post.getShares() + "," + post.getDateTime() + "," + post.getOwner() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

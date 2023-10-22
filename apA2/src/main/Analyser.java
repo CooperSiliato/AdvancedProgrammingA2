@@ -14,9 +14,9 @@ public class Analyser {
 
     public Analyser(String name) {
         this.name = name;
-        this.postManager = new PostManager();
+        this.setPostManager(new PostManager());
         try {
-			postManager.loadPostsFromFile("csvfiles/posts.csv");
+			getPostManager().loadPostsFromFile("csvfiles/posts.csv");
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -137,10 +137,11 @@ public class Analyser {
 
         System.out.println("Enter date and time of post format DD/MM/YYYY HH:MM: ");
         String postDateTime = readUserInput();
+        String postOwner = readUserInput();
 
-        Post post = new Post(postID, postContent, postAuthor, postLikes, postShares, postDateTime);
+        Post post = new Post(postID, postContent, postAuthor, postLikes, postShares, postDateTime, postOwner);
 
-        postManager.addPost(post);
+        getPostManager().addPost(post);
         System.out.println("Post added successfully.");
     }
 
@@ -152,7 +153,7 @@ public class Analyser {
     	System.out.println("-- Delete a post --\nEnter post ID: ");
     	int postID = Integer.parseInt(readUserInput());
 
-        if (postManager.deletePost(postID)) {
+        if (getPostManager().deletePost(postID)) {
             System.out.println("Post with ID " + postID + " has been deleted.");
         } else {
             System.out.println("Post with ID " + postID + " not found.");
@@ -163,7 +164,7 @@ public class Analyser {
     	System.out.println("-- Retrieve a post --\nEnter post ID: ");
         int postID = Integer.parseInt(readUserInput());
 
-        Post retrievedPost = postManager.retrievePost(postID);
+        Post retrievedPost = getPostManager().retrievePost(postID);
 
         if (retrievedPost != null) {
             System.out.println("Post ID: " + retrievedPost.getId());
@@ -180,9 +181,9 @@ public class Analyser {
     public void retrieveLikedPost() {
     	System.out.println("-- Retrieve the top N posts with most likes --\nPlease specify the number of posts to retrieve: ");
 
-    	int n = Integer.parseInt(readUserInput());
+    	int n = 10;
 
-        Map<Integer, Post> topLikedPosts = postManager.getTopNPostsByLikes(n);
+        Map<Integer, Post> topLikedPosts = getPostManager().getTopNPostsByLikes(n);
 
         if (!topLikedPosts.isEmpty()) {
             System.out.println("The top-" + n + " posts with the most likes are:");
@@ -201,7 +202,7 @@ public class Analyser {
 
     	int n = Integer.parseInt(readUserInput());
 
-        Map<Integer, Post> topSharedPosts = postManager.getTopNPostsByShares(n);
+        Map<Integer, Post> topSharedPosts = getPostManager().getTopNPostsByShares(n);
 
         if (!topSharedPosts.isEmpty()) {
             System.out.println("The top-" + n + " posts with the most shares are:");
@@ -214,5 +215,15 @@ public class Analyser {
             System.out.println("No posts available.");
         }
     }
+
+
+	public PostManager getPostManager() {
+		return postManager;
+	}
+
+
+	public void setPostManager(PostManager postManager) {
+		this.postManager = postManager;
+	}
 
 }

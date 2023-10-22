@@ -8,14 +8,16 @@ public class Post {
     private int likes;
     private int shares;
     private String dateTime;
+    private String owner;
 
-    public Post(int id, String content, String author, int postLikes, int postShares, String dateTime) {
+    public Post(int id, String content, String author, int postLikes, int postShares, String dateTime, String owner) {
         this.id = id;
         this.content = content;
         this.author = author;
         this.likes = postLikes;
         this.shares = postShares;
         this.dateTime = dateTime;
+        this.owner = owner;
     }
 
 
@@ -55,6 +57,14 @@ public class Post {
 
     public void setDateTime(String dateTime) {
         this.dateTime = dateTime;
+    }
+    
+    public String getOwner() {
+    	return owner;
+    }
+    
+    public void setOwner(String owner) {
+    	this.owner = owner;
     }
 
 }

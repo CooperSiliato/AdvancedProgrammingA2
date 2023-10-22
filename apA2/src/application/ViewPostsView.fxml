@@ -8,6 +8,6 @@
       alignment="CENTER" spacing="10" styleClass="background">
     <Label text="View Posts" styleClass="header-text"/>
     <ListView fx:id="postListView" />
-    <Button text="Back to Dashboard" onAction="#backToDashboard"/>
+    <Button text="Back" onAction="#backToDashboard"/>
    
 </VBox>
