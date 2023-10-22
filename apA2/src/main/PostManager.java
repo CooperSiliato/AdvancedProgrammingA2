@@ -93,16 +93,16 @@ public class PostManager {
 
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 6) {
+                if (parts.length == 5) {
                     int id = Integer.parseInt(parts[0]);
                     String content = parts[1];
                     String author = parts[2];
                     int likes = Integer.parseInt(parts[3]);
                     int shares = Integer.parseInt(parts[4]);
                     String dateTime = parts[5];
-                    String owner = parts[6];
 
-                    Post post = new Post(id, content, author, likes, shares, dateTime, owner);
+
+                    Post post = new Post(id, content, author, likes, shares, dateTime);
                     postsMap.put(id, post);
                 }
             }
@@ -116,7 +116,7 @@ public class PostManager {
 
             for (Post post : postsMap.values()) {
                 writer.write(post.getId() + "," + post.getContent() + "," + post.getAuthor() + ","
-                        + post.getLikes() + "," + post.getShares() + "," + post.getDateTime() + "," + post.getOwner() + "\n");
+                        + post.getLikes() + "," + post.getShares() + "," + post.getDateTime() + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

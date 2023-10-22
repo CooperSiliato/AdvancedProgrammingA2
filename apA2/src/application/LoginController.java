@@ -32,8 +32,7 @@ public class LoginController {
     		    DashboardController dashboardController = loader.getController();
                 dashboardController.setWelcomeMessage(authenticatedUser);
                 
-
-    		    // Create a new scene and set it on the stage
+                
     		    Scene dashboardScene = new Scene(root);
     		    Stage stage = (Stage) usernameField.getScene().getWindow();
     		    stage.setScene(dashboardScene);

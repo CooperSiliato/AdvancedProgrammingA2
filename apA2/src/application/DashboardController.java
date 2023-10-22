@@ -20,10 +20,18 @@ public class DashboardController {
     @FXML
     private Button editProfile;
     
-    private Analyser analyser;
+    private User currentUser;
     
     public DashboardController() {
-    	analyser = new Analyser("Your Analyser Name");
+    	new Analyser("Your Analyser Name");
+    }
+    
+    public void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
+    public User getCurrentUser() {
+        return currentUser;
     }
 
     
@@ -32,8 +40,27 @@ public class DashboardController {
     }
 
     public void editProfile() {
-    	
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("EditProfileView.fxml"));
+            Parent root = loader.load();
+            EditProfileController editProfileController = loader.getController();
+
+            // Pass the current user to the EditProfileController (assuming you have a method to get the current user)
+            editProfileController.setCurrentUser(getCurrentUser());
+
+
+            Scene editProfileScene = new Scene(root);
+
+            // Get the current stage
+            Stage primaryStage = (Stage) welcomeLabel.getScene().getWindow();
+
+            // Set the EditProfileView as the active scene
+            primaryStage.setScene(editProfileScene);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
+
         
 
 
@@ -71,24 +98,6 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
-    
-//    @FXML
-//    public void viewLikedPosts() {
-//        try {
-//        	
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("ViewPostsView.fxml"));
-//            Parent root = loader.load();
-//            ViewPostsController viewPostController = loader.getController();
-//            viewPostController.setDashboardController(this); // Pass the reference
-//            viewPostController.initializePosts(); // Initialize and display the posts
-//
-//            Scene viewPostsScene = new Scene(root);
-//            Stage primaryStage = (Stage) welcomeLabel.getScene().getWindow();
-//            primaryStage.setScene6(viewPostsScene);
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 
     
     public void logout() {

@@ -11,7 +11,8 @@
     <Button onAction="#retrievePostsByLikes" text="Retrieve Posts by N Likes" GridPane.columnIndex="0" GridPane.rowIndex="1" />
     <Button onAction="#retrievePostById" text="Retrieve Post by ID" GridPane.columnIndex="0" GridPane.rowIndex="2" />
     <Button onAction="#exportPost" text="Export Post" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-    <Button onAction="#backToDashboard" text="Back to Dashboard" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <Button onAction="#removePostById" text="Remove Post by ID" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <Button onAction="#backToDashboard" text="Back to Dashboard" GridPane.columnIndex="0" GridPane.rowIndex="5" />
    <Label text="Choose an Option" />
    <columnConstraints>
       <ColumnConstraints />

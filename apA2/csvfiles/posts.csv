@@ -1,6 +1,5 @@
-Post_ID,Content,Author,Likes,Shares,DateTime,Owner
-1,This is a post by User1,User1,10,5,2023-10-21 08:30,User1
-2,Another post by User1,User1,5,2,2023-10-21 09:15,User1
-3,Post by User2,User2,8,3,2023-10-21 10:00:00,User2
-4,Interesting content by User3,User3,12,6,2023-10-21 10:45,User3
-1,test,test,120,12,12,test
+Post_ID,Content,Author,Likes,Shares,DateTime
+1,This is a post by User1,User1,10,5,2023-10-21 08:30
+2,Another post by User1,User1,5,2,2023-10-21 09:15
+3,Post by User2,User2,8,3,2023-10-21 10:00:00
+4,Interesting content by User3,User3,12,6,2023-10-21 10:45

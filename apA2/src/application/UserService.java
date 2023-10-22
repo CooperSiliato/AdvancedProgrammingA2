@@ -9,6 +9,8 @@ import javafx.scene.control.Alert.AlertType;
 
 public class UserService {
     private List<User> users;
+    
+    private static User currentUser;
 
     public UserService() {
         users = new ArrayList<>();
@@ -20,12 +22,15 @@ public class UserService {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
-                if (userData.length == 4) {
-                    String username = userData[0];
-                    String password = userData[1];
-                    String firstName = userData[2];
-                    String lastName = userData[3];
-                    users.add(new User(username, password, firstName, lastName));
+                if (userData.length == 5) {
+                	int id = Integer.parseInt(userData[0]);
+                    String username = userData[1];
+                    String password = userData[2];
+                    String firstName = userData[3];
+                    String lastName = userData[4];
+                    users.add(new User(id, username, password, firstName, lastName));
+                    
+                    
                 }
             }
         } catch (IOException e) {
@@ -36,6 +41,7 @@ public class UserService {
     public User authenticate(String username, String password) {
         for (User user : users) {
             if (user.getUsername().equals(username) && user.getPassword().equals(password)) {
+            	currentUser = user;
                 return user;
             }
         }
@@ -44,9 +50,10 @@ public class UserService {
 
     public void registerUser(User user) {
         // Check if the username is already in use
+    	int newID = getHighestUserId() + 1;
         if (isUsernameUnique(user.getUsername())) {
             try (FileWriter writer = new FileWriter("csvfiles/users.csv", true)) {
-                String userLine = user.getUsername() + "," + user.getPassword() + "," + user.getFirstName() + "," + user.getLastName();
+                String userLine = "\n" + newID + "," + user.getUsername() + "," + user.getPassword() + "," + user.getFirstName() + "," + user.getLastName();
                 writer.write(userLine + "\n");
                 
                 users.add(user);
@@ -60,7 +67,7 @@ public class UserService {
         }
     }
 
-    private boolean isUsernameUnique(String username) {
+    public boolean isUsernameUnique(String username) {
         for (User user : users) {
             if (user.getUsername().equals(username)) {
             	
@@ -70,40 +77,83 @@ public class UserService {
         return true; // Username is unique
     }
     
+    public static User getCurrentUser() {
+        return currentUser;
+    }
     
     public void updateUser(User updatedUser) {
-        List<User> updatedUsers = new ArrayList<>();
-
-        try (BufferedReader reader = new BufferedReader(new FileReader("csvfiles/users.csv"))) {
-            String line;
-            while ((line = reader.readLine()) != null) {
-                String[] userData = line.split(",");
-                if (userData.length == 4) {
-                    String username = userData[0];
-                    String password = userData[1];
-                    String firstName = userData[2];
-                    String lastName = userData[3];
-
-                    if (username.equals(updatedUser.getUsername())) {
-                        updatedUsers.add(updatedUser); // Add the updated user
-                    } else {
-                        updatedUsers.add(new User(username, password, firstName, lastName));
-                    }
-                }
+        int updatedUserId = updatedUser.getId();
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            if (user.getId() == updatedUserId) {
+                // Update the user in the list
+                users.set(i, updatedUser);
+                // Save the updated users list to the CSV file
+                saveUsersToCSV();
+                return;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+    }
 
+    private void saveUsersToCSV() {
         try (FileWriter writer = new FileWriter("csvfiles/users.csv")) {
-            for (User user : updatedUsers) {
-                String userLine = user.getUsername() + "," + user.getPassword() + "," + user.getFirstName() + "," + user.getLastName();
+        	
+            for (User user : users) {
+                String userLine = user.getId() + "," + user.getUsername() + "," + user.getPassword() + "," + user.getFirstName() + "," + user.getLastName();
                 writer.write(userLine + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+    
+    public int getHighestUserId() {
+        int highestId = 0;
+        try (BufferedReader reader = new BufferedReader(new FileReader("csvfiles/users.csv"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] userData = line.split(",");
+                if (userData.length >= 1) {
+                    int userId = Integer.parseInt(userData[0]);
+                    if (userId > highestId) {
+                        highestId = userId;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return highestId;
+    }
+    
+    public void cleanCSVFile(String fileName) {
+        try {
+            String inputFilePath = "csvfiles/" + fileName + ".csv";
+            String outputFilePath = "csvfiles/cleaned_" + fileName + ".csv";
+            
+            removeLineBreaksFromCSV(inputFilePath, outputFilePath);
+            // After cleaning, replace the original file with the cleaned one
+            java.nio.file.Files.move(java.nio.file.Paths.get(outputFilePath), java.nio.file.Paths.get(inputFilePath), java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+            System.out.println("Line breaks removed from CSV file.");
+        } catch (java.io.IOException e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void removeLineBreaksFromCSV(String inputFilePath, String outputFilePath) throws java.io.IOException {
+        try (java.io.BufferedReader reader = new java.io.BufferedReader(new java.io.FileReader(inputFilePath));
+             java.io.BufferedWriter writer = new java.io.BufferedWriter(new java.io.FileWriter(outputFilePath))) {
+            java.lang.String line;
+            while ((line = reader.readLine()) != null) {
+                if (!line.trim().isEmpty()) {
+                    writer.write(line);
+                    writer.newLine();
+                }
+            }
+        }
+    }
+    
+
 
     
     private void showAlert(String title, String content) {
@@ -113,4 +163,6 @@ public class UserService {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
+   
 }

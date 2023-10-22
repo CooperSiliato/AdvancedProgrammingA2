@@ -90,8 +90,9 @@ public class Analyser {
      * The utility method to read user input.
      */
     public static String readUserInput() {
-	    Scanner sc = new Scanner(System.in);
-	    return sc.nextLine();
+	    try (Scanner sc = new Scanner(System.in)) {
+			return sc.nextLine();
+		}
 	}
 
     /**
@@ -137,9 +138,8 @@ public class Analyser {
 
         System.out.println("Enter date and time of post format DD/MM/YYYY HH:MM: ");
         String postDateTime = readUserInput();
-        String postOwner = readUserInput();
 
-        Post post = new Post(postID, postContent, postAuthor, postLikes, postShares, postDateTime, postOwner);
+        Post post = new Post(postID, postContent, postAuthor, postLikes, postShares, postDateTime);
 
         getPostManager().addPost(post);
         System.out.println("Post added successfully.");

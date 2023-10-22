@@ -10,6 +10,7 @@ public class MainGUI extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	
         // Load the login view from the FXML file
         Parent root = FXMLLoader.load(getClass().getResource("LoginView.fxml"));
 
@@ -23,8 +24,13 @@ public class MainGUI extends Application {
     }
 
     public static void main(String[] args) {
-        launch(args);
+       
+        
         PostManager postManager = new PostManager();
+        UserService userService = new UserService();
+        userService.cleanCSVFile("users");
+		userService.cleanCSVFile("posts");
+		 launch(args);
         try {
             postManager.loadPostsFromFile("csvfiles/posts.csv");
         } catch (Exception e) {

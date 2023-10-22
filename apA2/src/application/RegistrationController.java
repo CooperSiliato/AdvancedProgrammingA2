@@ -22,18 +22,22 @@ public class RegistrationController {
     private TextField lastNameField;
 
     private UserService userService = new UserService();
+    private int lastAssignedId;
 
     public void handleRegistration() {
+    	
         String username = usernameField.getText();
         String password = passwordField.getText();
         String firstName = firstNameField.getText();
         String lastName = lastNameField.getText();
-
         
+        int newUserId = determineNewUserId();
 
         // Create a new user
-        User newUser = new User(username, password, firstName, lastName);
+        User newUser = new User(newUserId, username, password, firstName, lastName);
         userService.registerUser(newUser);
+        
+        setLastAssignedId(newUserId);
 
         try {
 		    FXMLLoader loader = new FXMLLoader(getClass().getResource("LoginView.fxml"));
@@ -47,4 +51,21 @@ public class RegistrationController {
 		    e.printStackTrace();
 		}
     }
+    
+    private int determineNewUserId() {
+        // Read the users from the CSV file and find the highest ID
+    	
+        int highestId = userService.getHighestUserId();
+
+        // The new ID is one greater than the highest ID
+        return highestId + 1;
+    }
+
+	public int getLastAssignedId() {
+		return lastAssignedId;
+	}
+
+	public void setLastAssignedId(int lastAssignedId) {
+		this.lastAssignedId = lastAssignedId;
+	}
 }
