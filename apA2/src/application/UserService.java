@@ -22,21 +22,22 @@ public class UserService {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] userData = line.split(",");
-                if (userData.length == 5) {
-                	int id = Integer.parseInt(userData[0]);
+                if (userData.length == 6) { // Assuming 6 columns in the CSV
+                    int id = Integer.parseInt(userData[0]);
                     String username = userData[1];
                     String password = userData[2];
                     String firstName = userData[3];
                     String lastName = userData[4];
-                    users.add(new User(id, username, password, firstName, lastName));
-                    
-                    
+                    boolean isVIP = Boolean.parseBoolean(userData[5]);
+
+                    users.add(new User(id, username, password, firstName, lastName, isVIP));
                 }
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
     public User authenticate(String username, String password) {
         for (User user : users) {
@@ -66,15 +67,42 @@ public class UserService {
             showAlert("Username Taken", "Sorry, the username is already taken. Please choose another username.");
         }
     }
-
-    public boolean isUsernameUnique(String username) {
-        for (User user : users) {
-            if (user.getUsername().equals(username)) {
-            	
-                return false; // Username is not unique
+    
+    public List<User> getAllUsers() {
+        if (users == null) {
+            users = new ArrayList<>();
+            try (BufferedReader reader = new BufferedReader(new FileReader("your_csv_file.csv"))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    String[] parts = line.split(",");
+                    if (parts.length >= 5) {
+                    	int id = Integer.parseInt(parts[0]);
+                        String username = parts[1];
+                        String password = parts[2];
+                        String firstName = parts[3];
+                        String lastName = parts[4];
+                        boolean isVIP = Boolean.parseBoolean(parts[5]);
+                        User user = new User(id, username, password, firstName, lastName, isVIP);
+                        users.add(user);
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
-        return true; // Username is unique
+        return users;
+    }
+
+    public boolean isUsernameUnique(String username) {
+        List<User> users = getAllUsers(); // Assuming you have a method to get all users
+
+        for (User user : users) {
+            if (user.getUsername().equals(username)) {
+                return true; // Username already exists
+            }
+        }
+
+        return false; // Username is not taken
     }
     
     public static User getCurrentUser() {
@@ -97,15 +125,15 @@ public class UserService {
 
     private void saveUsersToCSV() {
         try (FileWriter writer = new FileWriter("csvfiles/users.csv")) {
-        	
             for (User user : users) {
-                String userLine = user.getId() + "," + user.getUsername() + "," + user.getPassword() + "," + user.getFirstName() + "," + user.getLastName();
+                String userLine = user.getId() + "," + user.getUsername() + "," + user.getPassword() + "," + user.getFirstName() + "," + user.getLastName() + "," + user.isVIP();
                 writer.write(userLine + "\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
     
     public int getHighestUserId() {
         int highestId = 0;
@@ -125,6 +153,20 @@ public class UserService {
         }
         return highestId;
     }
+    
+    public void upgradeToVIP(User user) {
+        user.setVIP(true); // Set the user as a VIP
+        updateUser(user); // Update the user in the user list and save it to the CSV
+    }
+    
+    public boolean isCurrentUserVIP() {
+        User currentUser = getCurrentUser(); // Get the current user
+        if (currentUser != null) {
+            return currentUser.isVIP();
+        }
+        return false; // Handle the case where the current user is not available or is not VIP
+    }
+
     
     public void cleanCSVFile(String fileName) {
         try {

@@ -1,10 +1,11 @@
 package application;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import main.Analyser;
 
 import java.io.IOException;
 
@@ -19,11 +20,18 @@ public class DashboardController {
     private Label welcomeLabel;
     @FXML
     private Button editProfile;
+    @FXML
+    private Button upgradeToVipButton;
+    @FXML
+    private Button VipFeaturesButton;
     
     private User currentUser;
     
     public DashboardController() {
-    	new Analyser("Your Analyser Name");
+
+
+        setCurrentUser(UserService.getCurrentUser());
+    	
     }
     
     public void setCurrentUser(User user) {
@@ -33,6 +41,9 @@ public class DashboardController {
     public User getCurrentUser() {
         return currentUser;
     }
+    
+    
+    
 
     
     public void setWelcomeMessage(User user) {
@@ -98,6 +109,49 @@ public class DashboardController {
             e.printStackTrace();
         }
     }
+    
+    @FXML
+    public void upgradeToVip() {
+    	UserService userService = new UserService();
+        if (!userService.isCurrentUserVIP()) {
+            
+			// Allow the upgrade only if the user is not already a VIP
+            userService.upgradeToVIP(getCurrentUser());
+            showAlert("Upgrade to VIP", "Congratulations! You are now a VIP.");
+            // Disable the "Upgrade to VIP" button after the upgrade
+            upgradeToVipButton.setDisable(true);
+        } else {
+            showAlert("Upgrade to VIP", "You are already a VIP.");
+        }
+    }
+
+
+
+    @FXML
+    public void VipFeatures() {
+    	UserService userService = new UserService();
+        if (userService.isCurrentUserVIP()) {
+            // Implement navigation to the "VIPFeaturesView" when the user has access
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("VIPFeaturesView.fxml"));
+                Parent root = loader.load();
+
+                // Pass any necessary data to the VIPFeaturesController, if needed
+
+                Scene vipFeaturesScene = new Scene(root);
+                Stage primaryStage = (Stage) VipFeaturesButton.getScene().getWindow();
+                primaryStage.setScene(vipFeaturesScene);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            // Show a popup message if the user does not have access to VIP features
+            showAlert("Access Denied", "You do not have access to VIP features.");
+        }
+    }
+
+
+
 
     
     public void logout() {
@@ -113,6 +167,14 @@ public class DashboardController {
 		    e.printStackTrace();
 		}
     	
+    }
+    
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
     
     

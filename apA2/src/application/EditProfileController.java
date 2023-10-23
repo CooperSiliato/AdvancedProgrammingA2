@@ -68,11 +68,22 @@ public class EditProfileController {
         String newPassword = newPasswordField.getText();
         String newFirstName = newFirstNameField.getText();
         String newLastName = newLastNameField.getText();
-    
 
         User currentUser = UserService.getCurrentUser();
 
         if (currentUser != null) {
+            // Check if the new username is already in use
+            if (userService.isUsernameUnique(newUsername)) {
+                showAlert("Error", "Username is already in use. Please choose a different username.");
+                return;
+            }
+
+            // Check for blank fields
+            if (newUsername.trim().isEmpty() || newPassword.trim().isEmpty() || newFirstName.trim().isEmpty() || newLastName.trim().isEmpty()) {
+                showAlert("Error", "All fields must be filled in.");
+                return;
+            }
+
             // Update the user's information
             currentUser.setUsername(newUsername);
             currentUser.setPassword(newPassword);
@@ -84,7 +95,6 @@ public class EditProfileController {
 
             showAlert("Profile Updated", "Your profile information has been updated.");
             backToDashboard();
-            
         } else {
             showAlert("Error", "Failed to update profile information.");
         }

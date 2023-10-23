@@ -16,7 +16,7 @@ public class MainGUI extends Application {
 
         // Set up the scene and stage
         Scene scene = new Scene(root);
-        primaryStage.setTitle("Your Application Name");
+        primaryStage.setTitle("Data Analytics Hub");
         primaryStage.setScene(scene);
 
         // Show the stage

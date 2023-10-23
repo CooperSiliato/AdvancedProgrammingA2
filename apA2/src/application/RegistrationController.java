@@ -32,9 +32,10 @@ public class RegistrationController {
         String lastName = lastNameField.getText();
         
         int newUserId = determineNewUserId();
+        boolean isVIP = false;
 
         // Create a new user
-        User newUser = new User(newUserId, username, password, firstName, lastName);
+        User newUser = new User(newUserId, username, password, firstName, lastName, isVIP);
         userService.registerUser(newUser);
         
         setLastAssignedId(newUserId);

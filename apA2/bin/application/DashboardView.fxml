@@ -8,6 +8,8 @@
     <Button text="Edit Profile" onAction="#editProfile" GridPane.columnIndex="0" GridPane.rowIndex="2" />
     <Button text="Add Post" onAction="#addPost" GridPane.columnIndex="0" GridPane.rowIndex="3" />
     <Button text="Retrieve Posts" onAction="#viewPosts" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+    <Button fx:id="VipFeaturesButton" text="VIP Features" onAction="#VipFeatures" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+    <Button fx:id="upgradeToVipButton" text="Upgrade To VIP" onAction="#upgradeToVip" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
     
-    <Button text="Logout" onAction="#logout" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+    <Button text="Logout" onAction="#logout" GridPane.columnIndex="0" GridPane.rowIndex="7" />
 </GridPane>

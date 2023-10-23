@@ -6,13 +6,15 @@ public class User {
     private String password;
     private String firstName;
     private String lastName;
+    private boolean isVIP;
 
-    public User(int id,String username, String password, String firstName, String lastName) {
+    public User(int id,String username, String password, String firstName, String lastName, boolean isVIP) {
         this.username = username;
         this.setPassword(password);
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.id = id;
+        this.setVIP(isVIP);
     }
 
     // Getters and setters for user properties
@@ -55,6 +57,15 @@ public class User {
 	public void setId(int id) {
 		this.id = id;
 	}
+
+	public boolean isVIP() {
+	    return isVIP;
+	}
+
+	public void setVIP(boolean isVIP) {
+	    this.isVIP = isVIP;
+	}
+
 
 
 }
