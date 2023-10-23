@@ -3,6 +3,9 @@
 - JavaFX 21.0.1
 - Junit 5
 
+Github Repo:
+https://github.com/CooperSiliato/AdvancedProgrammingA2
+
 How to install:
 
 Download the project
